@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Coursework.Data
-{
-    internal class TextspeakAbbreviations
-    {
-    }
-}
+﻿LOL,Laugh Out Loud
+BRB,Be Right Back
+GTG,Got To Go
+TTYL,Talk To You Later
+IDK,I Don't Know
+IMO,In My Opinion
+IMHO,In My Humble Opinion
+YOLO,You Only Live Once
+SMH,Shaking My Head
+ROFL,Rolling On the Floor Laughing
+OMG,Oh My God
+FYI,For Your Information
+ICYMI,In Case You Missed It
+DM,Direct Message
+NSFW,Not Safe For Work
