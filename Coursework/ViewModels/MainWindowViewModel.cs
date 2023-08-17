@@ -25,7 +25,8 @@ namespace Coursework.ViewModels
 
         public MainWindowViewModel()
         {
-            var textspeakService = new TextspeakService("Data/TextspeakAbbreviations.csv"); // Provide the correct path to your CSV file
+            string csvPath = Path.Combine(Environment.CurrentDirectory, @"Data\", "TextspeakAbbreviations.csv");
+            var textspeakService = new TextspeakService(csvPath); // Provide the correct path to your CSV file
             _messageProcessorService = new MessageProcessorService(textspeakService);
         }
 
