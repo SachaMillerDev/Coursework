@@ -28,6 +28,14 @@ namespace Coursework.Services
             }
         }
 
+        private TextspeakService _textspeakService;
+
+        public MessageProcessorService(TextspeakService textspeakService)
+        {
+            _textspeakService = textspeakService;
+        }
+
+
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {
             var parts = body.Split(new[] { ' ' }, 2);
