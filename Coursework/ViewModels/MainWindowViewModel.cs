@@ -25,8 +25,10 @@ namespace Coursework.ViewModels
 
         public MainWindowViewModel()
         {
-            _messageProcessorService = new MessageProcessorService(/* pass required dependencies here if any */);
+            var textspeakService = new TextspeakService("Data/TextspeakAbbreviations.csv"); // Provide the correct path to your CSV file
+            _messageProcessorService = new MessageProcessorService(textspeakService);
         }
+
 
         public string MessageHeader
         {

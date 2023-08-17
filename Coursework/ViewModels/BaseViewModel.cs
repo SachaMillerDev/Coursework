@@ -6,7 +6,8 @@ using Coursework.Services;
 using Microsoft.Win32;
 using System.IO;
 using System.Collections.ObjectModel;
-
+using Newtonsoft.Json;
+using Coursework.Commands;
 
 
 namespace Coursework.ViewModels
@@ -63,7 +64,13 @@ namespace Coursework.ViewModels
             }
         }
 
-        public ICommand ProcessMessageCommand { get; }
+        private readonly ICommand processMessageCommand;
+
+        public ICommand GetProcessMessageCommand()
+        {
+            return processMessageCommand;
+        }
+
         public ICommand LoadFromFileCommand { get; }
 
         private readonly MessageProcessorService _messageProcessorService;
@@ -75,7 +82,7 @@ namespace Coursework.ViewModels
         {
             _messageProcessorService = new MessageProcessorService();
 
-            ProcessMessageCommand = new RelayCommand(ProcessMessage);
+            processMessageCommand = new RelayCommand(ProcessMessage);
             LoadFromFileCommand = new RelayCommand(LoadFromFile);
         }
 
@@ -87,7 +94,7 @@ namespace Coursework.ViewModels
                 var processedMessage = _messageProcessorService.ProcessMessage(MessageHeader, MessageBody);
 
                 // Convert the processed message to a displayable format (e.g., JSON)
-                ProcessedMessage = JsonConvert.SerializeObject(processedMessage, Formatting.Indented);
+                ProcessedMessage = JsonConvert.SerializeObject(processedMessage, Newtonsoft.Json.Formatting.Indented);
 
                 // Clear any previous feedback messages
                 FeedbackMessage = string.Empty;

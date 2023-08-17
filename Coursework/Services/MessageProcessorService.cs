@@ -14,6 +14,10 @@ namespace Coursework.Services
             _textspeakService = textspeakService ?? throw new ArgumentNullException(nameof(textspeakService));
         }
 
+        public MessageProcessorService()
+        {
+        }
+
         public MessageBase ProcessMessage(string messageId, string body)
         {
             if (string.IsNullOrEmpty(messageId) || messageId.Length < 10)
