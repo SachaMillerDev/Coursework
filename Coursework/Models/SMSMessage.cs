@@ -4,7 +4,18 @@ using System.Text;
 
 namespace Coursework.Models
 {
-    internal class MessageBase
+    public class SMSMessage : MessageBase
     {
+        public string Sender { get; set; } // International phone number
+        public string MessageText { get; set; }
+
+        // Constructor
+        public SMSMessage(string messageId, string body, string sender, string messageText)
+            : base(messageId, body)
+        {
+            Sender = sender;
+            MessageText = messageText;
+        }
     }
+
 }
