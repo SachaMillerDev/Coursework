@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json;
 
 namespace Coursework.Services
 {
-    internal class MessageProcessorService
+    public class JSONSerializationService
     {
+        public string Serialize<T>(T obj)
+        {
+            return JsonSerializer.Serialize(obj);
+        }
+
+        public T Deserialize<T>(string jsonString)
+        {
+            return JsonSerializer.Deserialize<T>(jsonString);
+        }
     }
 }

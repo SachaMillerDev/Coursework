@@ -1,10 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Coursework.Services
 {
-    internal class MessageProcessorService
+    public class URLQuarantineService
     {
+        private List<string> _quarantinedUrls = new List<string>();
+
+        public void AddToQuarantine(string url)
+        {
+            _quarantinedUrls.Add(url);
+        }
+
+        public List<string> GetQuarantinedUrls()
+        {
+            return _quarantinedUrls;
+        }
     }
 }

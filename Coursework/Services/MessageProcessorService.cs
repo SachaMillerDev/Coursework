@@ -26,6 +26,11 @@ namespace Coursework.Services
 
         public MessageBase ProcessMessage(string messageId, string body)
         {
+            if (string.IsNullOrEmpty(messageId) || messageId.Length < 10)
+            {
+                throw new ArgumentException("Invalid message header format");
+            }
+
             switch (messageId[0])
             {
                 case 'S':
@@ -35,9 +40,10 @@ namespace Coursework.Services
                 case 'T':
                     return ProcessTweetMessage(messageId, body);
                 default:
-                    throw new ArgumentException("Invalid message type");
+                    throw new ArgumentException("Unsupported message type");
             }
         }
+
 
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {

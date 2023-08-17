@@ -68,6 +68,9 @@ namespace Coursework.ViewModels
 
         private readonly MessageProcessorService _messageProcessorService;
 
+        public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
+
+
         public MainWindowViewModel()
         {
             _messageProcessorService = new MessageProcessorService();
@@ -91,8 +94,7 @@ namespace Coursework.ViewModels
             }
             catch (Exception ex)
             {
-                // Display any errors as feedback to the user
-                FeedbackMessage = ex.Message;
+                FeedbackMessage = $"Error: {ex.Message}";
             }
         }
 
