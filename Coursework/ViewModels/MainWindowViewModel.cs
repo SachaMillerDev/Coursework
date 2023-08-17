@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
+using System.Xml;
 using Coursework.Services;
 
 namespace Coursework.ViewModels
@@ -66,8 +68,24 @@ namespace Coursework.ViewModels
 
         private void ProcessMessage()
         {
-            // TODO: Implement the logic to process the message using _messageProcessorService
+            try
+            {
+                // Use the MessageProcessorService to process the message
+                var processedMessage = _messageProcessorService.ProcessMessage(MessageHeader, MessageBody);
+
+                // Convert the processed message to a displayable format (e.g., JSON)
+                ProcessedMessage = JsonConvert.SerializeObject(processedMessage, Formatting.Indented);
+
+                // Clear any previous feedback messages
+                FeedbackMessage = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                // Display any errors as feedback to the user
+                FeedbackMessage = ex.Message;
+            }
         }
+
 
         private void LoadFromFile()
         {
