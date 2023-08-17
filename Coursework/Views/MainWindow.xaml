@@ -1,12 +1,47 @@
 ﻿<Window x:Class="Coursework.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Coursework"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Napier Bank Messaging" Height="600" Width="800">
 
+    <Grid>
+        <!-- Define the columns -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Column 1: Message Input -->
+        <GroupBox Grid.Column="0" Header="Message Input">
+            <StackPanel Margin="10">
+                <TextBox Name="MessageHeaderInput" PlaceholderText="Enter Message Header" Margin="0,0,0,10"/>
+                <TextBox Name="MessageBodyInput" PlaceholderText="Enter Message Body" Height="200" AcceptsReturn="True" Margin="0,0,0,10"/>
+                <Button Content="Process Message" Width="150" HorizontalAlignment="Center"/>
+                <Button Content="Load from File" Width="150" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Column 2: Processed Message & Feedback -->
+        <GroupBox Grid.Column="1" Header="Processed Message & Feedback">
+            <StackPanel Margin="10">
+                <TextBox Name="ProcessedMessageOutput" PlaceholderText="Processed Message" Height="200" IsReadOnly="True" Margin="0,0,0,10"/>
+                <TextBlock Name="FeedbackMessage" Text="Feedback will appear here" Foreground="Red" TextWrapping="Wrap"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Column 3: Lists (Trending, Mentions, SIR) -->
+        <GroupBox Grid.Column="2" Header="Lists">
+            <TabControl Margin="10">
+                <TabItem Header="Trending">
+                    <ListBox Name="TrendingList"/>
+                </TabItem>
+                <TabItem Header="Mentions">
+                    <ListBox Name="MentionsList"/>
+                </TabItem>
+                <TabItem Header="SIR">
+                    <ListBox Name="SIRList"/>
+                </TabItem>
+            </TabControl>
+        </GroupBox>
     </Grid>
 </Window>
