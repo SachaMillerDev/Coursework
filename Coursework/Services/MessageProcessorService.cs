@@ -76,7 +76,18 @@ namespace Coursework.Services
             var twitterId = parts[0];
             var tweetText = ExpandTextspeak(parts[1]);
 
-            // TODO: Extract hashtags and mentions from tweetText
+            // Extract hashtags and mentions
+            var hashtags = new List<string>();
+            var mentions = new List<string>();
+            foreach (var word in tweetText.Split(' '))
+            {
+                if (word.StartsWith("#"))
+                    hashtags.Add(word);
+                else if (word.StartsWith("@"))
+                    mentions.Add(word);
+            }
+
+            // TODO: Update the ViewModel's lists with these extracted hashtags and mentions
 
             return new TweetMessage
             {
@@ -85,6 +96,7 @@ namespace Coursework.Services
                 Text = tweetText
             };
         }
+
 
         private string ExpandTextspeak(string text)
         {

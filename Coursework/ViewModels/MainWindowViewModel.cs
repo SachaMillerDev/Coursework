@@ -3,8 +3,14 @@ using System.Text.Json.Serialization;
 using System.Windows.Input;
 using System.Xml;
 using Coursework.Services;
+using Microsoft.Win32;
+using System.IO;
+using System.Collections.ObjectModel;
+
+
 
 namespace Coursework.ViewModels
+
 {
     public class MainWindowViewModel : BaseViewModel
     {
@@ -12,6 +18,10 @@ namespace Coursework.ViewModels
         private string _messageBody;
         private string _processedMessage;
         private string _feedbackMessage;
+        public ObservableCollection<string> TrendingHashtags { get; } = new ObservableCollection<string>();
+        public ObservableCollection<string> Mentions { get; } = new ObservableCollection<string>();
+        public ObservableCollection<string> SIRList { get; } = new ObservableCollection<string>();
+
 
         public string MessageHeader
         {
@@ -89,7 +99,19 @@ namespace Coursework.ViewModels
 
         private void LoadFromFile()
         {
-            // TODO: Implement the logic to load a message from a file
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string fileContent = File.ReadAllText(openFileDialog.FileName);
+                // Assuming the file contains two lines: MessageHeader and MessageBody
+                var lines = fileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                if (lines.Length >= 2)
+                {
+                    MessageHeader = lines[0];
+                    MessageBody = lines[1];
+                }
+            }
         }
+
     }
 }
