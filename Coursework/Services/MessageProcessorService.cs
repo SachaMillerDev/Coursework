@@ -7,22 +7,6 @@ namespace Coursework.Services
 {
     public class MessageProcessorService
     {
-        // Sample dictionary for textspeak abbreviations
-        private Dictionary<string, string> textspeakDictionary = new Dictionary<string, string>
-        {
-             { "ROFL", "<Rolls on the floor laughing>" },
-             { "BRB", "<Be right back>" },
-             { "LOL", "<Laugh out loud>" },
-             { "TTYL", "<Talk to you later>" },
-             { "GTG", "<Got to go>" },
-             { "IDK", "<I don't know>" },
-             { "OMG", "<Oh my God>" },
-             { "BFF", "<Best friends forever>" },
-             { "TMI", "<Too much information>" },
-             { "IMO", "<In my opinion>" },
-             { "IMHO", "<In my humble opinion>" },
-    // ... add other abbreviations here
-        };
 
         public MessageBase ProcessMessage(string messageId, string body)
         {
@@ -44,12 +28,16 @@ namespace Coursework.Services
             }
         }
 
-
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {
             var parts = body.Split(new[] { ' ' }, 2);
+            if (parts.Length != 2)
+            {
+                throw new ArgumentException("Invalid SMS format");
+            }
+
             var sender = parts[0];
-            var messageText = ExpandTextspeak(parts[1]);
+            var messageText = _textspeakService.ExpandTextspeak(parts[1]);
 
             return new SMSMessage
             {

@@ -6,7 +6,14 @@ namespace Coursework.Services
 {
     public class TextspeakService
     {
-        private Dictionary<string, string> _textspeakDictionary;
+        private Dictionary<string, string> _textspeakDictionary = new Dictionary<string, string>
+        {
+            { "ROFL", "Rolls on the floor laughing" },
+            { "BRB", "Be right back" },
+            { "LOL", "Laugh out loud" }
+             // ... add more as needed
+        };
+
 
         public TextspeakService(string csvFilePath)
         {
@@ -32,7 +39,11 @@ namespace Coursework.Services
 
         public string ExpandTextspeak(string message)
         {
-            return _textspeakDictionary.Aggregate(message, (current, pair) => current.Replace(pair.Key, $"<{pair.Value}>"));
+            foreach (var abbreviation in _textspeakDictionary.Keys)
+            {
+                message = message.Replace(abbreviation, $"{abbreviation} <{_textspeakDictionary[abbreviation]}>");
+            }
+            return message;
         }
     }
 }
