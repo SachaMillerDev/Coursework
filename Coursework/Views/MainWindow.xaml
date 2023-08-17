@@ -14,17 +14,27 @@
         <!-- Column 1: Message Input -->
         <GroupBox Grid.Column="0" Header="Message Input">
             <StackPanel Margin="10">
-                <TextBox Name="MessageHeaderInput" PlaceholderText="Enter Message Header" Margin="0,0,0,10"/>
-                <TextBox Name="MessageBodyInput" PlaceholderText="Enter Message Body" Height="200" AcceptsReturn="True" Margin="0,0,0,10"/>
+                <!-- Message Header Input with Placeholder -->
+                <Grid Margin="0,0,0,10">
+                    <TextBox Name="MessageHeaderInput" Background="Transparent" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+                    <Label Content="Enter Message Header" Foreground="Gray" IsHitTestVisible="False" Name="MessageHeaderPlaceholder" />
+                </Grid>
+
+                <!-- Message Body Input with Placeholder -->
+                <Grid Height="200" Margin="0,0,0,10">
+                    <TextBox Name="MessageBodyInput" AcceptsReturn="True" Background="Transparent" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+                    <Label Content="Enter Message Body" Foreground="Gray" IsHitTestVisible="False" Name="MessageBodyPlaceholder" VerticalAlignment="Top" />
+                </Grid>
+
                 <Button Content="Process Message" Width="150" HorizontalAlignment="Center"/>
                 <Button Content="Load from File" Width="150" HorizontalAlignment="Center" Margin="0,10,0,0"/>
             </StackPanel>
         </GroupBox>
 
         <!-- Column 2: Processed Message & Feedback -->
-        <GroupBox Grid.Column="1" Header="Processed Message & Feedback">
+        <GroupBox Grid.Column="1" Header="Processed Message and Feedback">
             <StackPanel Margin="10">
-                <TextBox Name="ProcessedMessageOutput" PlaceholderText="Processed Message" Height="200" IsReadOnly="True" Margin="0,0,0,10"/>
+                <TextBox Name="ProcessedMessageOutput" Height="200" IsReadOnly="True" Margin="0,0,0,10"/>
                 <TextBlock Name="FeedbackMessage" Text="Feedback will appear here" Foreground="Red" TextWrapping="Wrap"/>
             </StackPanel>
         </GroupBox>

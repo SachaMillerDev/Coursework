@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Coursework.ViewModels; // Ensure you have this namespace
 
 namespace Coursework
 {
@@ -23,6 +24,31 @@ namespace Coursework
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox && textBox.Name == "MessageHeaderInput")
+            {
+                MessageHeaderPlaceholder.Visibility = Visibility.Collapsed;
+            }
+            else if (sender is TextBox textBox2 && textBox2.Name == "MessageBodyInput")
+            {
+                MessageBodyPlaceholder.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox && textBox.Name == "MessageHeaderInput" && string.IsNullOrEmpty(textBox.Text))
+            {
+                MessageHeaderPlaceholder.Visibility = Visibility.Visible;
+            }
+            else if (sender is TextBox textBox2 && textBox2.Name == "MessageBodyInput" && string.IsNullOrEmpty(textBox2.Text))
+            {
+                MessageBodyPlaceholder.Visibility = Visibility.Visible;
+            }
         }
     }
 }
