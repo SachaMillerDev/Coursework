@@ -47,30 +47,33 @@ namespace Coursework.Services
             var sender = parts[0];
             var messageText = _textspeakService.ExpandTextspeak(parts[1]);
 
-            return new SMSMessage
-            {
-                MessageId = messageId,
-                Sender = sender,
-                Text = messageText
-            };
+         return new SMSMessage(messageId, body, sender, messageText);
         }
 
         private EmailMessage ProcessEmailMessage(string messageId, string body)
         {
-            var parts = body.Split(new[] { " Subject: " }, 2);
-            var sender = parts[0];
-            var subjectAndMessage = parts[1].Split(new[] { ". " }, 2);
-            var subject = subjectAndMessage[0];
-            var messageText = HandleURLs(subjectAndMessage[1]);
-
-            return new EmailMessage
+            int subjectIndex = body.IndexOf(" Subject: ");
+            if (subjectIndex == -1)
             {
-                MessageId = messageId,
-                Sender = sender,
-                Subject = subject,
-                Text = messageText
-            };
+                throw new ArgumentException("Invalid email format");
+            }
+
+            var sender = body.Substring(0, subjectIndex);
+            var remainingBody = body.Substring(subjectIndex + " Subject: ".Length);
+
+            int messageIndex = remainingBody.IndexOf(". ");
+            if (messageIndex == -1)
+            {
+                throw new ArgumentException("Invalid email format");
+            }
+
+            var subject = remainingBody.Substring(0, messageIndex);
+            var messageText = HandleURLs(remainingBody.Substring(messageIndex + 2));
+
+            return new EmailMessage(messageId, body, sender, subject, messageText);
+
         }
+
 
         private TweetMessage ProcessTweetMessage(string messageId, string body)
         {
@@ -91,12 +94,7 @@ namespace Coursework.Services
 
             // TODO: Update the ViewModel's lists with these extracted hashtags and mentions
 
-            return new TweetMessage
-            {
-                MessageId = messageId,
-                TwitterId = twitterId,
-                Text = tweetText
-            };
+            return new TweetMessage(messageId, body, twitterId, tweetText);
         }
 
 
