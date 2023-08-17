@@ -7,6 +7,12 @@ namespace Coursework.Services
 {
     public class MessageProcessorService
     {
+        private readonly TextspeakService _textspeakService;
+
+        public MessageProcessorService(TextspeakService textspeakService)
+        {
+            _textspeakService = textspeakService ?? throw new ArgumentNullException(nameof(textspeakService));
+        }
 
         public MessageBase ProcessMessage(string messageId, string body)
         {
@@ -28,14 +34,6 @@ namespace Coursework.Services
             }
         }
 
-        private TextspeakService _textspeakService;
-
-        public MessageProcessorService(TextspeakService textspeakService)
-        {
-            _textspeakService = textspeakService;
-        }
-
-
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {
             var parts = body.Split(new[] { ' ' }, 2);
@@ -47,7 +45,7 @@ namespace Coursework.Services
             var sender = parts[0];
             var messageText = _textspeakService.ExpandTextspeak(parts[1]);
 
-         return new SMSMessage(messageId, body, sender, messageText);
+            return new SMSMessage(messageId, body, sender, messageText);
         }
 
         private EmailMessage ProcessEmailMessage(string messageId, string body)
@@ -71,15 +69,18 @@ namespace Coursework.Services
             var messageText = HandleURLs(remainingBody.Substring(messageIndex + 2));
 
             return new EmailMessage(messageId, body, sender, subject, messageText);
-
         }
-
 
         private TweetMessage ProcessTweetMessage(string messageId, string body)
         {
             var parts = body.Split(new[] { ' ' }, 2);
+            if (parts.Length != 2)
+            {
+                throw new ArgumentException("Invalid Tweet format");
+            }
+
             var twitterId = parts[0];
-            var tweetText = ExpandTextspeak(parts[1]);
+            var tweetText = _textspeakService.ExpandTextspeak(parts[1]);
 
             // Extract hashtags and mentions
             var hashtags = new List<string>();
@@ -95,16 +96,6 @@ namespace Coursework.Services
             // TODO: Update the ViewModel's lists with these extracted hashtags and mentions
 
             return new TweetMessage(messageId, body, twitterId, tweetText);
-        }
-
-
-        private string ExpandTextspeak(string text)
-        {
-            foreach (var abbreviation in textspeakDictionary)
-            {
-                text = text.Replace(abbreviation.Key, abbreviation.Value);
-            }
-            return text;
         }
 
         private string HandleURLs(string text)

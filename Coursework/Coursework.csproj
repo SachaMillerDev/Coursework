@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\TextspeakAbbreviations.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Data\TextspeakAbbreviations.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

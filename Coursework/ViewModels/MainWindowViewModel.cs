@@ -73,14 +73,6 @@ namespace Coursework.ViewModels
         public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
 
 
-        public MainWindowViewModel()
-        {
-            _messageProcessorService = new MessageProcessorService();
-
-            ProcessMessageCommand = new RelayCommand(ProcessMessage);
-            LoadFromFileCommand = new RelayCommand(LoadFromFile);
-        }
-
         private void ProcessMessage()
         {
             try
