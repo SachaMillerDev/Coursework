@@ -7,12 +7,10 @@ using Microsoft.Win32;
 using System.IO;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
-
-
+using Coursework.Commands;
 
 
 namespace Coursework.ViewModels
-
 {
     public class MainWindowViewModel : BaseViewModel
     {
@@ -20,10 +18,10 @@ namespace Coursework.ViewModels
         private string _messageBody;
         private string _processedMessage;
         private string _feedbackMessage;
+
         public ObservableCollection<string> TrendingHashtags { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> Mentions { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> SIRList { get; } = new ObservableCollection<string>();
-
 
         public string MessageHeader
         {
@@ -65,25 +63,18 @@ namespace Coursework.ViewModels
             }
         }
 
-        public ICommand ProcessMessageCommand { get; }
+        // Removed duplicate declaration of ProcessMessageCommand
+        public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
         public ICommand LoadFromFileCommand { get; }
 
         private readonly MessageProcessorService _messageProcessorService;
-
-        public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
-
 
         private void ProcessMessage()
         {
             try
             {
-                // Use the MessageProcessorService to process the message
                 var processedMessage = _messageProcessorService.ProcessMessage(MessageHeader, MessageBody);
-
-                // Convert the processed message to a displayable format (e.g., JSON)
-                ProcessedMessage = JsonConvert.SerializeObject(processedMessage, Formatting.Indented);
-
-                // Clear any previous feedback messages
+                ProcessedMessage = JsonConvert.SerializeObject(processedMessage, Newtonsoft.Json.Formatting.Indented);
                 FeedbackMessage = string.Empty;
             }
             catch (Exception ex)
@@ -92,14 +83,12 @@ namespace Coursework.ViewModels
             }
         }
 
-
         private void LoadFromFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 string fileContent = File.ReadAllText(openFileDialog.FileName);
-                // Assuming the file contains two lines: MessageHeader and MessageBody
                 var lines = fileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 if (lines.Length >= 2)
                 {
@@ -108,6 +97,5 @@ namespace Coursework.ViewModels
                 }
             }
         }
-
     }
 }
