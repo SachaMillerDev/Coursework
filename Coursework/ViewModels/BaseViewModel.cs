@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace Coursework.ViewModels
 
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class BaseMainWindowViewModel : BaseViewModel
     {
         private string _messageHeader;
         private string _messageBody;
@@ -71,7 +71,7 @@ namespace Coursework.ViewModels
         public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
 
 
-        public MainWindowViewModel()
+        public BaseMainWindowViewModel()
         {
             _messageProcessorService = new MessageProcessorService();
 

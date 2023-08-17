@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using Coursework.Commands;
 
-
 namespace Coursework.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
@@ -18,14 +17,21 @@ namespace Coursework.ViewModels
         private string _messageBody;
         private string _processedMessage;
         private string _feedbackMessage;
+        private readonly MessageProcessorService _messageProcessorService;
 
         public ObservableCollection<string> TrendingHashtags { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> Mentions { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> SIRList { get; } = new ObservableCollection<string>();
 
+        public MainWindowViewModel()
+        {
+            _messageProcessorService = new MessageProcessorService(/* pass required dependencies here if any */);
+        }
+
         public string MessageHeader
         {
             get => _messageHeader;
+
             set
             {
                 _messageHeader = value;
@@ -63,11 +69,8 @@ namespace Coursework.ViewModels
             }
         }
 
-        // Removed duplicate declaration of ProcessMessageCommand
-        public ICommand ProcessMessageCommand => new RelayCommand(ProcessMessage);
-        public ICommand LoadFromFileCommand { get; }
-
-        private readonly MessageProcessorService _messageProcessorService;
+        public ICommand ProcessMessageCommand => new RelayCommand(_ => ProcessMessage());
+        public ICommand LoadFromFileCommand => new RelayCommand(_ => LoadFromFile());
 
         private void ProcessMessage()
         {
