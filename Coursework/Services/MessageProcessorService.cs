@@ -1,24 +1,38 @@
 ﻿using Coursework.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Coursework.Services
 {
     public class MessageProcessorService
     {
+        // Sample dictionary for textspeak abbreviations
+        private Dictionary<string, string> textspeakDictionary = new Dictionary<string, string>
+        {
+             { "ROFL", "<Rolls on the floor laughing>" },
+             { "BRB", "<Be right back>" },
+             { "LOL", "<Laugh out loud>" },
+             { "TTYL", "<Talk to you later>" },
+             { "GTG", "<Got to go>" },
+             { "IDK", "<I don't know>" },
+             { "OMG", "<Oh my God>" },
+             { "BFF", "<Best friends forever>" },
+             { "TMI", "<Too much information>" },
+             { "IMO", "<In my opinion>" },
+             { "IMHO", "<In my humble opinion>" },
+    // ... add other abbreviations here
+        };
+
         public MessageBase ProcessMessage(string messageId, string body)
         {
             switch (messageId[0])
             {
                 case 'S':
-                    // Process SMS message
                     return ProcessSMSMessage(messageId, body);
                 case 'E':
-                    // Process Email message
                     return ProcessEmailMessage(messageId, body);
                 case 'T':
-                    // Process Tweet
                     return ProcessTweetMessage(messageId, body);
                 default:
                     throw new ArgumentException("Invalid message type");
@@ -27,22 +41,63 @@ namespace Coursework.Services
 
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {
-            // Extract sender and message text from body
-            return new SMSMessage(); // Add appropriate parameters if required
+            var parts = body.Split(new[] { ' ' }, 2);
+            var sender = parts[0];
+            var messageText = ExpandTextspeak(parts[1]);
+
+            return new SMSMessage
+            {
+                MessageId = messageId,
+                Sender = sender,
+                Text = messageText
+            };
         }
 
         private EmailMessage ProcessEmailMessage(string messageId, string body)
         {
-            // Extract sender, subject, and message text from body
-            return new EmailMessage(); // Add appropriate parameters if required
+            var parts = body.Split(new[] { " Subject: " }, 2);
+            var sender = parts[0];
+            var subjectAndMessage = parts[1].Split(new[] { ". " }, 2);
+            var subject = subjectAndMessage[0];
+            var messageText = HandleURLs(subjectAndMessage[1]);
+
+            return new EmailMessage
+            {
+                MessageId = messageId,
+                Sender = sender,
+                Subject = subject,
+                Text = messageText
+            };
         }
 
         private TweetMessage ProcessTweetMessage(string messageId, string body)
         {
-            // Extract Twitter ID and tweet text from body
-            return new TweetMessage(); // Add appropriate parameters if required
+            var parts = body.Split(new[] { ' ' }, 2);
+            var twitterId = parts[0];
+            var tweetText = ExpandTextspeak(parts[1]);
+
+            // TODO: Extract hashtags and mentions from tweetText
+
+            return new TweetMessage
+            {
+                MessageId = messageId,
+                TwitterId = twitterId,
+                Text = tweetText
+            };
         }
 
-    }
+        private string ExpandTextspeak(string text)
+        {
+            foreach (var abbreviation in textspeakDictionary)
+            {
+                text = text.Replace(abbreviation.Key, abbreviation.Value);
+            }
+            return text;
+        }
 
+        private string HandleURLs(string text)
+        {
+            return Regex.Replace(text, @"http[^\s]+", "<URL Quarantined>");
+        }
+    }
 }
