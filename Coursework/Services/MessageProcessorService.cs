@@ -28,20 +28,21 @@ namespace Coursework.Services
         private SMSMessage ProcessSMSMessage(string messageId, string body)
         {
             // Extract sender and message text from body
-            // Return new SMSMessage object
+            return new SMSMessage(); // Add appropriate parameters if required
         }
 
         private EmailMessage ProcessEmailMessage(string messageId, string body)
         {
             // Extract sender, subject, and message text from body
-            // Return new EmailMessage object
+            return new EmailMessage(); // Add appropriate parameters if required
         }
 
         private TweetMessage ProcessTweetMessage(string messageId, string body)
         {
             // Extract Twitter ID and tweet text from body
-            // Return new TweetMessage object
+            return new TweetMessage(); // Add appropriate parameters if required
         }
+
     }
 
 }

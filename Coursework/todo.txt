@@ -1,0 +1,9 @@
+Create the file structure in your repository.
+
+Implement the models for different message types.
+
+Implement the services for processing messages, serializing to JSON, expanding textspeak, quarantining URLs, and tracking trends.
+
+Design the user interface using WPF.
+
+Implement the logic behind the views in the ViewModels.
