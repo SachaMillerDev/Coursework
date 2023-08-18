@@ -16,9 +16,7 @@ using Coursework.ViewModels; // Ensure you have this namespace
 
 namespace Coursework
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         public MainWindow()
